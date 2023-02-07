@@ -10,6 +10,13 @@ const utils = require('@iobroker/adapter-core');
 
 // Load your modules here, e.g.:
 // const fs = require("fs");
+const axios = require('axios');
+const https = require('https');
+let sCookie = 'bad';
+
+const agent = new https.Agent({
+    rejectUnauthorized: false,
+});
 
 class Pbx3cx extends utils.Adapter {
     /**
@@ -40,6 +47,32 @@ class Pbx3cx extends utils.Adapter {
         // this.config:
         this.log.info('config option1: ' + this.config.option1);
         this.log.info('config option2: ' + this.config.option2);
+
+        axios.defaults.baseURL = 'https://3cx-pbx.lan:5001/api';
+        axios.defaults.httpsAgent = agent;
+
+        axios
+            .get('/systemstatus', { Cookie: sCookie })
+            .then(function (response) {
+                console.log('Status code', response.status);
+                console.log('Status code', JSON.stringify(response.data));
+            })
+            .catch((err) => {
+                console.log(`Error ${err.response.status}`);
+                this.getNewCookie();
+            });
+
+        await new Promise((r) => setTimeout(r, 1000));
+        axios
+            .request({
+                url: 'systemstatus',
+                method: 'get',
+                httpsAgent: agent,
+                headers: { 'Content-Type': 'application/json', Cookie: sCookie },
+            })
+            .then(function (res) {
+                console.log('########## GotInfo: ' + JSON.stringify(res.data));
+            });
 
         /*
 		For every state in the system there has to be also an object of type state
@@ -154,6 +187,22 @@ class Pbx3cx extends utils.Adapter {
     //         }
     //     }
     // }
+
+    getNewCookie() {
+        sCookie = 'bad';
+        axios
+            .request({
+                url: 'login',
+                method: 'post',
+                httpsAgent: agent,
+                headers: { 'Content-Type': 'application/json' },
+                data: '{"Username":"root","Password":"mypass"}',
+            })
+            .then(function (res) {
+                console.log('########## GotToken: ' + res.headers['set-cookie'].toString().split(';')[0]);
+                sCookie = res.headers['set-cookie'].toString().split(';')[0];
+            });
+    }
 }
 
 if (require.main !== module) {
