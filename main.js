@@ -38,7 +38,7 @@ class Pbx3cx extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        // Initialize your adapter here
+        let bPreCheckErr = false; //Make preCheck, if error found don't run main functions
 
         // Reset the connection indicator during startup
         this.setState('info.connection', false, true);
@@ -51,18 +51,20 @@ class Pbx3cx extends utils.Adapter {
         axios.defaults.baseURL = 'https://3cx-pbx.lan:5001/api';
         axios.defaults.httpsAgent = agent;
 
-        axios
-            .get('/systemstatus', { Cookie: sCookie })
-            .then(function (response) {
-                console.log('Status code', response.status);
-                console.log('Status code', JSON.stringify(response.data));
-            })
-            .catch((err) => {
-                console.log(`Error ${err.response.status}`);
-                this.getNewCookie();
-            });
+        //Wait for new Cookie
+        let i = 0;
+        while (i < 10 && sCookie == 'bad') {
+            //Login an get a Cookie on startup
+            this.getNewCookie();
+            await new Promise((r) => setTimeout(r, 1000));
+            i++;
+        }
+        if (sCookie == 'bad') {
+            this.log.error('Keine Verbindung zur API!');
+            return;
+        }
 
-        await new Promise((r) => setTimeout(r, 1000));
+        //Check if we can connect to the api
         axios
             .request({
                 url: 'systemstatus',
@@ -71,7 +73,7 @@ class Pbx3cx extends utils.Adapter {
                 headers: { 'Content-Type': 'application/json', Cookie: sCookie },
             })
             .then(function (res) {
-                console.log('########## GotInfo: ' + JSON.stringify(res.data));
+                console.log('Verbindung zu 3CX ' + JSON.stringify(res.data.FQDN) + ' erfolgreich.');
             });
 
         /*
@@ -196,11 +198,14 @@ class Pbx3cx extends utils.Adapter {
                 method: 'post',
                 httpsAgent: agent,
                 headers: { 'Content-Type': 'application/json' },
-                data: '{"Username":"root","Password":"mypass"}',
+                data: '{"Username":"root","Password":"3cX1233cX123"}',
             })
             .then(function (res) {
-                console.log('########## GotToken: ' + res.headers['set-cookie'].toString().split(';')[0]);
+                //console.log('########## GotToken: ' + res.headers['set-cookie'].toString().split(';')[0]);
                 sCookie = res.headers['set-cookie'].toString().split(';')[0];
+            })
+            .catch((err) => {
+                console.log(`Error ${err.response.status}`);
             });
     }
 }
