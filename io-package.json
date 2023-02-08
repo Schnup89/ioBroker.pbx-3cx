@@ -76,57 +76,57 @@
         "aAPIEndpoints": [
             {
                 "sEP": "SystemStatus",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "ActiveCalls",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": true
             },
             {
                 "sEP": "ServiceList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "ExtensionList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "TrunkList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "InboundRuleList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "OutboundRuleList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "IVRList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "RingGroupList",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "CallLog",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             },
             {
                 "sEP": "PhoneBookEntry",
-                "bEnable": true,
+                "bEnabled": true,
                 "bLive": false
             }
         ]

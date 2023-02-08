@@ -41,7 +41,7 @@
                 {
                     "type": "checkbox",
                     "title": "Enable",
-                    "attr": "bEnable",
+                    "attr": "bEnabled",
                     "width": 200,
                     "filter": false,
                     "sort": false
