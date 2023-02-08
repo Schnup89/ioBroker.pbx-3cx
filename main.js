@@ -3,6 +3,7 @@
 const utils = require('@iobroker/adapter-core');
 
 const axios = require('axios');
+const { debug } = require('console');
 const https = require('https');
 let sCookie = 'bad';
 let tmr_GetValues = null;
@@ -152,9 +153,7 @@ class Pbx3cx extends utils.Adapter {
     // }
 
     // Get Endpoints Config from Config
-    getAPIEndpoints() {
-        this.log.debug('--------------' + this.config.jo);
-    }
+    getAPIEndpoints() {}
 
     // Get new Cookie from API
     async getNewCookie() {
@@ -178,8 +177,15 @@ class Pbx3cx extends utils.Adapter {
     }
 
     async fGetDataLoop() {
-        // Set Timer for next Update
+        // Set Timer for next Refresh
         tmr_GetValues = setTimeout(() => this.fGetDataLoop(), this.config.sRefresh * 60000);
+
+        this.config.aAPIEndpoints.forEach((oEntry) => {
+            this.log.info(oEntry.bEnabled);
+            if (oEntry.bEnabled) {
+                this.log.info('### ' + oEntry.sEP);
+            }
+        });
 
         // Check if we can connect to the api
         /*await this.ApiClient3CX.request({

@@ -41,7 +41,7 @@
                 {
                     "type": "checkbox",
                     "title": "Enable",
-                    "attr": "sEnable",
+                    "attr": "bEnable",
                     "width": 200,
                     "filter": false,
                     "sort": false
@@ -50,7 +50,7 @@
                     "type": "checkbox",
                     "title": "Livedata",
                     "width": 200,
-                    "attr": "sLive",
+                    "attr": "bLive",
                     "filter": false,
                     "sort": false
                 }

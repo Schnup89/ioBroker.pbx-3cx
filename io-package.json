@@ -71,61 +71,63 @@
         ]
     },
     "native": {
+        "sUser": "root",
+        "sRefresh": 30,
         "aAPIEndpoints": [
             {
                 "sEP": "SystemStatus",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "ActiveCalls",
-                "sEnable": true,
-                "sLive": true
+                "bEnable": true,
+                "bLive": true
             },
             {
                 "sEP": "ServiceList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "ExtensionList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "TrunkList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "InboundRuleList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "OutboundRuleList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "IVRList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "RingGroupList",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "CallLog",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             },
             {
                 "sEP": "PhoneBookEntry",
-                "sEnable": true,
-                "sLive": false
+                "bEnable": true,
+                "bLive": false
             }
         ]
     },
