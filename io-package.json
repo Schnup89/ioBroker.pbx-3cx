@@ -71,8 +71,63 @@
         ]
     },
     "native": {
-        "option1": true,
-        "option2": "42"
+        "aAPIEndpoints": [
+            {
+                "sEP": "SystemStatus",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "ActiveCalls",
+                "sEnable": true,
+                "sLive": true
+            },
+            {
+                "sEP": "ServiceList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "ExtensionList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "TrunkList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "InboundRuleList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "OutboundRuleList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "IVRList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "RingGroupList",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "CallLog",
+                "sEnable": true,
+                "sLive": false
+            },
+            {
+                "sEP": "PhoneBookEntry",
+                "sEnable": true,
+                "sLive": false
+            }
+        ]
     },
     "objects": [],
     "instanceObjects": [

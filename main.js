@@ -1,22 +1,13 @@
 'use strict';
 
-/*
- * Created with @iobroker/create-adapter v2.3.0
- */
-
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-// Load your modules here, e.g.:
-// const fs = require("fs");
 const axios = require('axios');
 const https = require('https');
 let sCookie = 'bad';
-
-const agent = new https.Agent({
-    rejectUnauthorized: false,
-});
+let tmr_GetValues = null;
+let tmr_GetValues_Fast = null;
+const nEndpointCount = 11;
 
 class Pbx3cx extends utils.Adapter {
     /**
@@ -32,94 +23,67 @@ class Pbx3cx extends utils.Adapter {
         // this.on('objectChange', this.onObjectChange.bind(this));
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
+
+        this.ApiClient3CX = null;
     }
 
-    /**
-     * Is called when databases are connected and adapter received configuration.
-     */
     async onReady() {
-        let bPreCheckErr = false; //Make preCheck, if error found don't run main functions
-
         // Reset the connection indicator during startup
         this.setState('info.connection', false, true);
-
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
-
-        axios.defaults.baseURL = 'https://3cx-pbx.lan:5001/api';
-        axios.defaults.httpsAgent = agent;
-
-        //Wait for new Cookie
-        let i = 0;
-        while (i < 10 && sCookie == 'bad') {
-            //Login an get a Cookie on startup
-            this.getNewCookie();
-            await new Promise((r) => setTimeout(r, 1000));
-            i++;
+        // Pre-Start checks
+        if (this.config.sHost == undefined || this.config.sUser == undefined || this.config.sPass == undefined) {
+            this.log.error('Parameter missing - please check instance configuration!');
+            return;
         }
-        if (sCookie == 'bad') {
-            this.log.error('Keine Verbindung zur API!');
+        if (this.config.sRefresh < 5 || this.config.sRefresh > 10000) {
+            this.log.error('Refresh interval should be between 5 and 10000 - please check instance configuration!');
             return;
         }
 
-        //Check if we can connect to the api
-        axios
-            .request({
-                url: 'systemstatus',
-                method: 'get',
-                httpsAgent: agent,
-                headers: { 'Content-Type': 'application/json', Cookie: sCookie },
-            })
-            .then(function (res) {
-                console.log('Verbindung zu 3CX ' + JSON.stringify(res.data.FQDN) + ' erfolgreich.');
-            });
+        // Get API Endpoints from Config
+        this.getAPIEndpoints();
 
-        /*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-        await this.setObjectNotExistsAsync('testVariable', {
-            type: 'state',
-            common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
-                read: true,
-                write: true,
-            },
-            native: {},
+        // Create HTTP API Object
+        this.ApiClient3CX = axios.create({
+            baseURL: 'https://' + this.config.sHost + ':5001/api',
+            timeout: 1000,
+            headers: { 'Content-Type': 'application/json' },
+            responseEncoding: 'utf8',
+            httpsAgent: new https.Agent({
+                rejectUnauthorized: false,
+            }),
         });
+        this.log.debug('Axios-Client created!');
 
-        // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
-        // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-        // this.subscribeStates('lights.*');
-        // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-        // this.subscribeStates('*');
+        // Get new Cookie on startup
+        await this.getNewCookie();
 
-        /*
-			setState examples
-			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setStateAsync('testVariable', true);
+        // Print PBX DNS Name and Version
+        const oRes = await this.ApiClient3CX.request({
+            url: 'systemstatus',
+            method: 'get',
+            headers: { Cookie: sCookie },
+        }).catch((sErr) => {
+            this.log.error('Error get PBX info: ' + sErr);
+            sCookie = 'bad';
+        });
+        if (oRes != undefined || oRes.status != 200) {
+            this.log.info(
+                'Verbindung zu 3CX ' +
+                    JSON.parse(JSON.stringify(oRes.data.FQDN)) +
+                    ' (' +
+                    JSON.parse(JSON.stringify(oRes.data.Version)) +
+                    ') erfolgreich.',
+            );
+            this.setState('info.connection', true, true);
+        } else {
+            this.log.error('Error fetching PBX-Informations from API!');
+        }
 
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
+        // Start Data-Refresh-Loops
+        this.fGetDataLoop();
 
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
-
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
+        //this.fGetLiveDataLoop();
     }
 
     /**
@@ -128,11 +92,8 @@ class Pbx3cx extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
+            clearTimeout(tmr_GetValues);
+            clearTimeout(tmr_GetValues_Fast);
 
             callback();
         } catch (e) {
@@ -190,23 +151,44 @@ class Pbx3cx extends utils.Adapter {
     //     }
     // }
 
-    getNewCookie() {
-        sCookie = 'bad';
-        axios
-            .request({
-                url: 'login',
-                method: 'post',
-                httpsAgent: agent,
-                headers: { 'Content-Type': 'application/json' },
-                data: '{"Username":"root","Password":"3cX1233cX123"}',
-            })
+    // Get Endpoints Config from Config
+    getAPIEndpoints() {
+        this.log.debug('--------------' + this.config.jo);
+    }
+
+    // Get new Cookie from API
+    async getNewCookie() {
+        await this.ApiClient3CX.request({
+            url: 'login',
+            method: 'post',
+            headers: { 'Content-Type': 'application/json' },
+            data: '{"Username":"' + this.config.sUser + '","Password":"' + this.config.sPass + '"}',
+        })
             .then(function (res) {
-                //console.log('########## GotToken: ' + res.headers['set-cookie'].toString().split(';')[0]);
+                // Remember Cookie
                 sCookie = res.headers['set-cookie'].toString().split(';')[0];
+                return;
             })
             .catch((err) => {
-                console.log(`Error ${err.response.status}`);
+                this.log.error(`Error ${err}`);
+                sCookie = 'bad';
+                return;
             });
+        this.log.debug('Got Cookie: ' + sCookie);
+    }
+
+    async fGetDataLoop() {
+        // Set Timer for next Update
+        tmr_GetValues = setTimeout(() => this.fGetDataLoop(), this.config.sRefresh * 60000);
+
+        // Check if we can connect to the api
+        /*await this.ApiClient3CX.request({
+            url: 'systemstatus',
+            method: 'get',
+            headers: { 'Content-Type': 'application/json', Cookie: sCookie },
+        }).then(function (res) {
+            if (bFirstConnect) this.log.info('Verbindung zu 3CX ' + JSON.stringify(res.data.FQDN) + ' erfolgreich.');
+        });*/
     }
 }
 

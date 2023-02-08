@@ -2,15 +2,59 @@
     "i18n": true,
     "type": "panel",
     "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
+        "_header-settings": {
+            "type": "header",
+            "text": "Connection Settings",
+            "size": 2
+        },
+        "sHost": {
+            "type": "text",
+            "label": "3CX IP/DNS",
             "newLine": true
         },
-        "option2": {
+        "sUser": {
             "type": "text",
-            "label": "option2",
+            "label": "Username",
             "newLine": true
+        },
+        "sPass": {
+            "type": "password",
+            "label": "Password",
+            "newLine": false
+        },
+        "sRefresh": {
+            "type": "number",
+            "label": "Aktualisierungsinterval (sec)",
+            "newLine": true
+        },
+        "_header-endpoints": {
+            "type": "header",
+            "text": "API Endpoints",
+            "size": 2
+        },
+
+        "aAPIEndpoints": {
+            "type": "table",
+            "noDelete": true,
+            "items": [
+                { "type": "text", "width": "100%", "title": "Endpoint", "attr": "sEP", "filter": false, "sort": false },
+                {
+                    "type": "checkbox",
+                    "title": "Enable",
+                    "attr": "sEnable",
+                    "width": 200,
+                    "filter": false,
+                    "sort": false
+                },
+                {
+                    "type": "checkbox",
+                    "title": "Livedata",
+                    "width": 200,
+                    "attr": "sLive",
+                    "filter": false,
+                    "sort": false
+                }
+            ]
         }
     }
 }
