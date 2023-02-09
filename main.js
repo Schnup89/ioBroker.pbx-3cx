@@ -7,7 +7,7 @@ const { debug } = require('console');
 const https = require('https');
 let sCookie = 'bad';
 let tmr_GetValues = null;
-let tmr_GetValues_Fast = null;
+let tmr_GetValues_Live = null;
 const nEndpointCount = 11;
 
 class Pbx3cx extends utils.Adapter {
@@ -41,9 +41,6 @@ class Pbx3cx extends utils.Adapter {
             return;
         }
 
-        // Get API Endpoints from Config
-        this.getAPIEndpoints();
-
         // Create HTTP API Object
         this.ApiClient3CX = axios.create({
             baseURL: 'https://' + this.config.sHost + ':5001/api',
@@ -68,23 +65,39 @@ class Pbx3cx extends utils.Adapter {
             this.log.error('Error get PBX info: ' + sErr);
             sCookie = 'bad';
         });
-        if (oRes != undefined || oRes.status != 200) {
-            this.log.info(
-                'Verbindung zu 3CX ' +
-                    JSON.parse(JSON.stringify(oRes.data.FQDN)) +
-                    ' (' +
-                    JSON.parse(JSON.stringify(oRes.data.Version)) +
-                    ') erfolgreich.',
-            );
-            this.setState('info.connection', true, true);
+        if (oRes != undefined) {
+            if (oRes.status != 200) {
+                this.log.info(
+                    'Verbindung zu 3CX ' +
+                        JSON.parse(JSON.stringify(oRes.data.FQDN)) +
+                        ' (' +
+                        JSON.parse(JSON.stringify(oRes.data.Version)) +
+                        ') erfolgreich.',
+                );
+                this.setState('info.connection', true, true);
+            }
         } else {
             this.log.error('Error fetching PBX-Informations from API!');
         }
 
-        // Start Data-Refresh-Loops
-        this.fGetDataLoop();
+        // Create Objects
+        this.config.aAPIEndpoints.forEach((oEntry) => {
+            if (oEntry.bEnabled) {
+                this.setObjectNotExists(oEntry.sEP, {
+                    type: 'state',
+                    common: {
+                        type: 'json',
+                        role: 'state',
+                    },
+                    native: {},
+                });
+            }
+        });
 
-        //this.fGetLiveDataLoop();
+        // Start Data-Refresh-Loops
+        this.startDataLoop();
+
+        this.startLiveDataLoop();
     }
 
     /**
@@ -94,7 +107,7 @@ class Pbx3cx extends utils.Adapter {
     onUnload(callback) {
         try {
             clearTimeout(tmr_GetValues);
-            clearTimeout(tmr_GetValues_Fast);
+            clearTimeout(tmr_GetValues_Live);
 
             callback();
         } catch (e) {
@@ -152,9 +165,6 @@ class Pbx3cx extends utils.Adapter {
     //     }
     // }
 
-    // Get Endpoints Config from Config
-    getAPIEndpoints() {}
-
     // Get new Cookie from API
     async getNewCookie() {
         await this.ApiClient3CX.request({
@@ -168,33 +178,52 @@ class Pbx3cx extends utils.Adapter {
                 sCookie = res.headers['set-cookie'].toString().split(';')[0];
                 return;
             })
-            .catch((err) => {
-                this.log.error(`Error ${err}`);
+            .catch((sErr) => {
+                this.log.error('Error get PBX info: ' + sErr);
                 sCookie = 'bad';
                 return;
             });
         this.log.debug('Got Cookie: ' + sCookie);
     }
 
-    async fGetDataLoop() {
+    async startDataLoop() {
         // Set Timer for next Refresh
-        tmr_GetValues = setTimeout(() => this.fGetDataLoop(), this.config.sRefresh * 60000);
+        tmr_GetValues = setTimeout(() => this.startDataLoop(), this.config.sRefresh * 1000);
 
         this.config.aAPIEndpoints.forEach((oEntry) => {
-            this.log.info(oEntry.bEnabled);
-            if (oEntry.bEnabled) {
-                this.log.info('### ' + oEntry.sEP);
+            if (oEntry.bEnabled && !oEntry.bLive) {
+                this.getJsonData(oEntry.sEP);
             }
         });
+    }
 
-        // Check if we can connect to the api
-        /*await this.ApiClient3CX.request({
-            url: 'systemstatus',
+    async startLiveDataLoop() {
+        // Set Timer for next Refresh
+        tmr_GetValues = setTimeout(() => this.startLiveDataLoop(), 1000);
+
+        this.config.aAPIEndpoints.forEach((oEntry) => {
+            if (oEntry.bEnabled && oEntry.bLive) {
+                this.getJsonData(oEntry.sEP);
+            }
+        });
+    }
+
+    async getJsonData(sEP) {
+        this.log.debug('Update json of ' + sEP);
+        const oRes = await this.ApiClient3CX.request({
+            url: sEP,
             method: 'get',
-            headers: { 'Content-Type': 'application/json', Cookie: sCookie },
-        }).then(function (res) {
-            if (bFirstConnect) this.log.info('Verbindung zu 3CX ' + JSON.stringify(res.data.FQDN) + ' erfolgreich.');
-        });*/
+            headers: { Cookie: sCookie },
+        }).catch((sErr) => {
+            this.log.error('Error get PBX info: ' + sErr);
+        });
+        if (oRes != undefined) {
+            if (oRes.status != 200) {
+                this.setStateChangedAsync(sEP, { val: oRes.data, ack: true });
+            }
+        } else {
+            this.log.error('Error getting Endpoint "' + sEP);
+        }
     }
 }
 
