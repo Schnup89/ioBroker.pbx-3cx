@@ -13,10 +13,10 @@
                 "it": "Versione iniziale",
                 "es": "Versión inicial",
                 "pl": "Pierwsze wydanie",
+                "uk": "початковий реліз",
                 "zh-cn": "首次出版"
             }
         },
-        "title": "3CX-PBX",
         "titleLang": {
             "en": "3CX-PBX",
             "de": "3CX-Telefonanlage",
@@ -27,19 +27,21 @@
             "it": "3CX-PBX",
             "es": "3CX-PBX",
             "pl": "3CX-PBX",
+            "uk": "3CX-PBX",
             "zh-cn": "3CX-PBX"
         },
         "desc": {
-            "en": "Anbindung von 3CX Telefonanlagen",
-            "de": "Anbindung von 3CX Telefonanlagen",
-            "ru": "Приложение к 3CX Telefonanlagen",
-            "pt": "Anbindung von 3CX Telefonanlagen",
-            "nl": "Aanmelding van 3CX Telefonanlagen",
-            "fr": "Anbindung von 3CX Telefonanlagen",
-            "it": "Anbindung von 3CX Telefonanlagen",
-            "es": "Anbindung von 3CX Telefonanlagen",
-            "pl": "Anbindung von 3CX Telefonanlagen",
-            "zh-cn": "Anbindung von 3CX Telefonanlagen"
+            "en": "Adapter for 3CX telephone systems",
+            "de": "Adapter für 3CX Telefonanlagen",
+            "ru": "Адаптер для телефонных систем 3CX",
+            "pt": "Adaptador para sistemas de telefone 3CX",
+            "nl": "Adapter voor 3CX telefoonsystemen",
+            "fr": "Adaptateur pour systèmes téléphoniques 3CX",
+            "it": "Adattatore per sistemi telefonici 3CX",
+            "es": "Adaptador para sistemas telefónicos 3CX",
+            "pl": "Adapter dla telefonów 3CX",
+            "uk": "Адаптер для телефонних систем 3CX",
+            "zh-cn": "3CX电话系统包"
         },
         "authors": ["Schnup89 <tobias_tsafi@gmx.de>"],
         "keywords": ["pbx", "telefon", "api", "3cx"],
