@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "pbx-3cx",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -15,6 +15,19 @@
                 "pl": "Pierwsze wydanie",
                 "uk": "початковий реліз",
                 "zh-cn": "首次出版"
+            },
+            "0.0.2": {
+                "en": "Github PR + Dependencies",
+                "de": "Github PR + Abhängigkeiten",
+                "ru": "Github PR + Зависимости",
+                "pt": "Github PR + Dependências",
+                "nl": "Github PR + Dependencies",
+                "fr": "Github PR + Dépendances",
+                "it": "Github PR + Dipendenze",
+                "es": "Github PR + Dependencias",
+                "pl": "Zalecenie PR + Dependencyjności",
+                "uk": "Github PR + Залежності",
+                "zh-cn": "GthubPR+受扶养人"
             }
         },
         "titleLang": {

@@ -3,7 +3,6 @@
 const utils = require('@iobroker/adapter-core');
 
 const axios = require('axios');
-const { debug } = require('console');
 const https = require('https');
 let sCookie = 'bad';
 let tmr_GetValues = null;
