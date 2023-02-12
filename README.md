@@ -13,18 +13,43 @@
 
 ## pbx-3cx adapter for ioBroker
 
-Anbindung von 3CX Telefonanlagen
+Mit diesem Adapter kannst du Daten aus deiner 3CX-Telefonanlage zyklisch in ioBroker übertragen.  
+*This Adapter allows you to fetch Data from your 3CX-PBX to ioBroker.*
+  
+  
+## Setup / Konfiguration  
+
+In der Adapter-Konfiguration unter Instanzen -> pbx-3CX -> Einstellungen müssen folgende Werte eingetragen werden:  
+URL-Format: https://deine_pbx_ip_oder_dns_name:5001/api  
+Username: admin, root oder nebenstelle, je nach Konfiguration  
+Passwort: geheim :)  
+
+*To connect to yopur 3CX-PBX you have to fill out the connection parameter in the adapter-configuration (Instances -> pbx-3CX -> Settings)*  
+*URL-Format: https://your_pbx_ip_or_dns_name:5001/api*  
+*Username: admin, root or extension, depending on the config*   
+*Password: your secret :)*  
+  
+  
+Es gibt zwei Abfragezyklen, einen schnellen (Live, 1Sek) und einen Standard, dessen Aktualisierungsinterval in der Adapter-Config angegeben werden kann.
+Jeder API Endpunkt kann nur einem der beiden Zyklen zugeordnet werden.
+
+*There are two polling cycles, a fast (Live, 1sec) and a default update interval which can be specified in the adapter-configs.*  
+*Each API Endpoint can only be assigned to one of the two cycles.*
+
+
+
+
+## Usage / Benutzung 
+  
+Ist die Verbindung hergestellt werden die 
+
 
 ## Changelog
 
-<!--
-    Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
--->
+### 0.0.1 (2023-02-12)
+* (schnup89) Initial Release
 
-### **WORK IN PROGRESS**
-
--   (Schnup89) initial release
+###
 
 ## License
 
