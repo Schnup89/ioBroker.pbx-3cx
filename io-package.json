@@ -72,7 +72,7 @@
     },
     "native": {
         "sUser": "",
-        "sRefresh": 30,
+        "sRefresh": 15,
         "aAPIEndpoints": [
             {
                 "sEP": "SystemStatus",
@@ -86,47 +86,97 @@
             },
             {
                 "sEP": "ServiceList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "ExtensionList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "TrunkList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
-                "sEP": "InboundRuleList",
-                "bEnabled": true,
+                "sEP": "InboundRulesList",
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "OutboundRuleList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "IVRList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "RingGroupList",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
                 "sEP": "CallLog",
-                "bEnabled": true,
+                "bEnabled": false,
                 "bLive": false
             },
             {
-                "sEP": "PhoneBookEntry",
-                "bEnabled": true,
+                "sEP": "PhoneBookEntryList",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "NumberBlackList",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "Reports/DefaultReport",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "ExistingReports",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "firewall",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "OutboundRuleList/getEmergencyList",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "SystemPromptList/promptSets",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "FaxList",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "CurrentUser",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "GroupList",
+                "bEnabled": false,
+                "bLive": false
+            },
+            {
+                "sEP": "PhoneList",
+                "bEnabled": false,
                 "bLive": false
             }
         ]

@@ -20,9 +20,6 @@ class Pbx3cx extends utils.Adapter {
             name: 'pbx-3cx',
         });
         this.on('ready', this.onReady.bind(this));
-        this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
-        // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
         this.ApiClient3CX = null;
@@ -65,15 +62,17 @@ class Pbx3cx extends utils.Adapter {
             this.log.error('Error get PBX info: ' + sErr);
             sCookie = 'bad';
         });
+        // Check for valid Response
         if (oRes != undefined) {
             if (oRes.status == 200) {
                 this.log.info(
-                    'Verbindung zu 3CX ' +
+                    'Connection to 3CX ' +
                         JSON.parse(JSON.stringify(oRes.data.FQDN)) +
                         ' (' +
                         JSON.parse(JSON.stringify(oRes.data.Version)) +
-                        ') erfolgreich.',
+                        ') successful.',
                 );
+                // All Connection-Check OK, set API Connected
                 this.setApiConnection(true);
             } else {
                 this.log.error('Error fetching PBX-Informations from API!');
@@ -82,10 +81,10 @@ class Pbx3cx extends utils.Adapter {
             this.log.error('Error fetching PBX-Informations from API!');
         }
 
-        // Create Objects
+        // Create IO-Objects
         this.config.aAPIEndpoints.forEach((oEntry) => {
             if (oEntry.bEnabled) {
-                this.setObjectNotExists(oEntry.sEP, {
+                this.setObjectNotExists(oEntry.sEP.split(/[^a-z/]/i)[0], {
                     type: 'state',
                     common: {
                         type: 'json',
@@ -96,9 +95,8 @@ class Pbx3cx extends utils.Adapter {
             }
         });
 
-        // Start Data-Refresh-Loops
+        // Start Data-Refresh-Loops (even if connection is not valid)
         this.startDataLoop();
-
         this.startLiveDataLoop();
     }
 
@@ -108,6 +106,7 @@ class Pbx3cx extends utils.Adapter {
      */
     onUnload(callback) {
         try {
+            // Stop DataLoop's on exit
             this.clearTimeout(tmr_GetValues);
             this.clearTimeout(tmr_GetValues_Live);
 
@@ -117,55 +116,7 @@ class Pbx3cx extends utils.Adapter {
         }
     }
 
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  * @param {string} id
-    //  * @param {ioBroker.Object | null | undefined} obj
-    //  */
-    // onObjectChange(id, obj) {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
-
-    /**
-     * Is called if a subscribed state changes
-     * @param {string} id
-     * @param {ioBroker.State | null | undefined} state
-     */
-    onStateChange(id, state) {
-        if (state) {
-            // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
-            // The state was deleted
-            this.log.info(`state ${id} deleted`);
-        }
-    }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
-    // onMessage(obj) {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
-
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
+    //######### Custom Functions
 
     // Get new Cookie from API
     async getNewCookie() {
@@ -176,13 +127,15 @@ class Pbx3cx extends utils.Adapter {
             data: '{"Username":"' + this.config.sUser + '","Password":"' + this.config.sPass + '"}',
         })
             .then(function (res) {
-                // Remember Cookie
+                // On successful request, remember Cookie
                 sCookie = res.headers['set-cookie'].toString().split(';')[0];
                 return;
             })
             .catch((sErr) => {
-                this.log.error('Error get PBX info: ' + sErr);
+                // On error request, set bad Cookie, set Apiconnection and print error in IOBroker
+                this.log.warn('Error getting Cookie: ' + sErr);
                 sCookie = 'bad';
+                this.setApiConnection(false);
                 return;
             });
         this.log.debug('Got Cookie: ' + sCookie);
@@ -192,6 +145,7 @@ class Pbx3cx extends utils.Adapter {
         // Set Timer for next Refresh
         tmr_GetValues = setTimeout(() => this.startDataLoop(), this.config.sRefresh * 1000);
 
+        // Loop through every APIEndpoint enabled in Adapter-Config (enabled, not live)
         if (bApiConnected) {
             this.config.aAPIEndpoints.forEach((oEntry) => {
                 if (oEntry.bEnabled && !oEntry.bLive) {
@@ -199,10 +153,10 @@ class Pbx3cx extends utils.Adapter {
                 }
             });
         } else {
-            // Refresh if connection is lost
+            // Get SystemStatus Endpoint if connection is lost (Device-Online-Check)
             this.getJsonData('SystemStatus');
         }
-        // Device Online-Check if SystemStatus is not choosen
+        // Request SystemStatus if it is not enabled in admin-config for (Device-Online-Check)
         if (this.config.aAPIEndpoints.findIndex((oEntry) => oEntry.sEP == 'SystemStatus') == -1)
             this.getJsonData('SystemStatus');
     }
@@ -211,6 +165,7 @@ class Pbx3cx extends utils.Adapter {
         // Set Timer for next Refresh
         tmr_GetValues_Live = setTimeout(() => this.startLiveDataLoop(), 1000);
 
+        // Loop through every APIEndpoint enabled in Adapter-Config (enabled, and live)
         if (bApiConnected) {
             this.config.aAPIEndpoints.forEach((oEntry) => {
                 if (oEntry.bEnabled && oEntry.bLive) {
@@ -227,32 +182,46 @@ class Pbx3cx extends utils.Adapter {
             method: 'get',
             headers: { Cookie: sCookie },
         }).catch((sErr) => {
-            if (sErr.response) {
-                this.getNewCookie();
-                return;
-            } else {
-                this.log.error('Error get PBX info: ' + sErr);
-                // Device Online-Check
+            // Sometimes sErr.response.status is not accessible, then return connection false
+            try {
+                // If http-code is Unathorized (401), get new cookie
+                if (sErr.response.status == 401) {
+                    this.log.debug('Result: Unathorized (HTTP401)');
+                    this.getNewCookie();
+                    return;
+                } else {
+                    // Print error and set Device Online-Check
+                    this.log.warn('Error get PBX info: ' + sErr);
+                    if (sEP == 'SystemStatus') this.setApiConnection(false);
+                }
+            } catch (err) {
+                // Print error and set Device Online-Check
+                this.log.warn('Error get PBX info: ' + sErr);
                 if (sEP == 'SystemStatus') this.setApiConnection(false);
             }
         });
         if (oRes != undefined) {
             if (oRes.status == 200) {
+                // Print error and set Device Online-Check
                 this.setStateChangedAsync(sEP, { val: JSON.stringify(oRes.data), ack: true });
-                // Device Online-Check
                 if (sEP == 'SystemStatus') this.setApiConnection(true);
             }
         } else {
-            this.log.error('Error getting Endpoint: ' + sEP);
-            // Device Online-Check
+            // Print error and set Device Online-Check
+            this.log.warn('Error getting Endpoint: ' + sEP);
             if (sEP == 'SystemStatus') this.setApiConnection(false);
         }
     }
 
     async setApiConnection(bStatus) {
+        // Nothing to do if no status change
+        if (bApiConnected == bStatus) return;
+        // Set ioBroker Devicestatus and Log
         bApiConnected = bStatus;
         await this.setStateChangedAsync('info.connection', { val: bStatus, ack: true });
-        this.log.debug('PBX-Connection Changed isConnected: ' + bStatus);
+        // Print error if connection is lost
+        if (!bStatus) this.log.error('PBX-Connection Changed isConnected: ' + bStatus);
+        else this.log.warn('PBX-Connection Changed isConnected: ' + bStatus);
     }
 }
 

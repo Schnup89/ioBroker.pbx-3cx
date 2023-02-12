@@ -4,7 +4,19 @@
     "items": {
         "_header-settings": {
             "type": "header",
-            "text": "Connection Settings",
+            "text": {
+                "en": "Connection Settings",
+                "de": "Verbindungseinstellungen",
+                "ru": "Настройки подключения",
+                "pt": "Configurações de conexão",
+                "nl": "Connectie Setting",
+                "fr": "Paramètres de connexion",
+                "it": "Impostazioni di connessione",
+                "es": "Ajustes de conexión",
+                "pl": "Strona internetowa",
+                "uk": "Налаштування підключення",
+                "zh-cn": "排 定"
+            },
             "size": 2
         },
         "sHost": {
@@ -17,17 +29,53 @@
         },
         "sUser": {
             "type": "text",
-            "label": "Username",
+            "label": {
+                "en": "Username",
+                "de": "Benutzername",
+                "ru": "Имя пользователя",
+                "pt": "Nome de utilizador",
+                "nl": "Noem",
+                "fr": "Nom",
+                "it": "Nome utente",
+                "es": "Nombre de usuario",
+                "pl": "Username",
+                "uk": "Ім'я користувача",
+                "zh-cn": "用户名称"
+            },
             "newLine": true
         },
         "sPass": {
             "type": "password",
-            "label": "Password",
+            "label": {
+                "en": "Password",
+                "de": "Passwort",
+                "ru": "Пароль",
+                "pt": "Senha",
+                "nl": "Wachtwoord",
+                "fr": "Mot de passe",
+                "it": "Password",
+                "es": "Contraseña",
+                "pl": "Password",
+                "uk": "Логін",
+                "zh-cn": "护照"
+            },
             "newLine": false
         },
         "sRefresh": {
             "type": "number",
-            "label": "Aktualisierungsinterval (sec)",
+            "label": {
+                "en": "Update interval (sec)",
+                "de": "Update-Intervall (sec)",
+                "ru": "Интервал обновления (sec)",
+                "pt": "Intervalo de atualização (sec)",
+                "nl": "Update interval (sec)",
+                "fr": "Intervalle de mise à jour (sec)",
+                "it": "Intervallo di aggiornamento (sec)",
+                "es": "Intervalo de actualización (sec)",
+                "pl": "Update interval (ang.)",
+                "uk": "Період оновлення (сек)",
+                "zh-cn": "最新间隔(sec)"
+            },
             "newLine": true
         },
         "_header-endpoints": {
@@ -35,7 +83,6 @@
             "text": "API Endpoints",
             "size": 2
         },
-
         "aAPIEndpoints": {
             "type": "table",
             "noDelete": true,
