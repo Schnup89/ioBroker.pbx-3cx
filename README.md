@@ -56,6 +56,17 @@ Once connected, the enabled API-Endpoints are queried and the result is stored a
 ![image](https://user-images.githubusercontent.com/28166743/218329154-904c0a8e-1310-44ce-a699-f1b2446da436.png)
   
 
+## Troubleshooting/Feature-Request / Problembehandlung/Änderungswünsche
+  
+**[DE]**  
+Bei Problemne mit dem Adapter bitte in der Instanzkonfiguration das "Debugging" des Adapters aktivieren und einen Issue eröffnen mit einer Beschreibung des Problem und den Logs.  
+Änderungswünsche (Neue API-Endpoints, etc.) gerne auch per Github Issue oder ioBroker Forum (Tag me: https://forum.iobroker.net/user/schnup89) melden.
+
+**[EN]**  
+If you have problems with the Adapter, please activate the "Debugging" Option in the adapter-instance configuration and open an issue with a description of the problem and the logs.
+Feel free to report Feature-Requests (new API endpoints, etc.) via Github issue or ioBroker Forum (Tag me: https://forum.iobroker.net/user/schnup89)
+
+
 ## Changelog
 
 ### 0.0.1 (2023-02-12)
