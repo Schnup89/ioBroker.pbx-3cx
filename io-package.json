@@ -120,12 +120,12 @@
                 "bLive": false
             },
             {
-                "sEP": "CallLog",
+                "sEP": "CallLog?TimeZoneName=Europe%2FBerlin&callState=All&dateRangeType=Today&fromFilter=&fromFilterType=Any&numberOfRows=50&searchFilter=&startRow=0&toFilter=&toFilterType=Any",
                 "bEnabled": false,
                 "bLive": false
             },
             {
-                "sEP": "PhoneBookEntryList",
+                "sEP": "PhoneBookEntryList?count=50&filter=&from=0",
                 "bEnabled": false,
                 "bLive": false
             },
