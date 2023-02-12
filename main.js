@@ -203,7 +203,7 @@ class Pbx3cx extends utils.Adapter {
         if (oRes != undefined) {
             if (oRes.status == 200) {
                 // Print error and set Device Online-Check
-                this.setStateChangedAsync(sEP, { val: JSON.stringify(oRes.data), ack: true });
+                this.setStateChangedAsync(sEP.split(/[^a-z/]/i)[0], { val: JSON.stringify(oRes.data), ack: true });
                 if (sEP == 'SystemStatus') this.setApiConnection(true);
             }
         } else {
