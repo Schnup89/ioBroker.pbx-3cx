@@ -13,18 +13,55 @@
 
 ## pbx-3cx adapter for ioBroker
 
-Anbindung von 3CX Telefonanlagen
+**[DE]**  
+Mit diesem Adapter kannst du Daten aus deiner 3CX-Telefonanlage zyklisch in ioBroker übertragen.  
+  
+**[EN ]**  
+This Adapter allows you to fetch Data from your 3CX-PBX to ioBroker.
+  
+  
+## Setup / Konfiguration  
+
+**[DE]**  
+In der Adapter-Konfiguration unter Instanzen -> pbx-3CX -> Einstellungen müssen folgende Werte eingetragen werden:  
+URL-Format: https://deine_pbx_ip_oder_dns_name:5001/api  
+Username: admin, root oder nebenstelle, je nach Konfiguration  
+Passwort: geheim :)  
+  
+Jeder API-Endpunkt kann aktiviert und deaktiviert werden. Zusätzlich kann der Abfrageintervall für einzelne API-Endpunkte auf 1 Sekunde verkürzt werden (Livedata).  
+Der Standard-Aktualisierungsinterval kann in der Adapter-Config angegeben werden kann. 
+Bitte aktiviert nur API-Endpunkte die Ihr wirklich benötigt (vor allem Livedata), jede Abfrage benötige entsprechende Performance auf beiden Seiten.
+  
+    
+**[EN]**  
+To connect to yopur 3CX-PBX you have to fill out the connection parameter in the adapter-configuration (Instances -> pbx-3CX -> Settings)  
+URL-Format: https://your_pbx_ip_or_dns_name:5001/api   
+Username: admin, root or extension, depending on the config   
+Password: your secret :)  
+
+Any API-Endpoint can be enabled or disabled. In addition, the polling interval for individual API-Endpoints can be shortened to 1 second (Livedata).  
+The default update interval can be specified in the adapter config.
+Please activate only API-Endpoints that you really need (especially live data), each query has performance impacts on both sides.
+
+
+
+## Usage / Benutzung 
+  
+**[DE]**  
+Ist die Verbindung hergestellt, werden die aktivierten API-Endpunkte abgefragt und das Ergebnis als JSON-Wert unter den Adapter-Objekt gespeichert.
+  
+**[EN]**  
+Once connected, the enabled API-Endpoints are queried and the result is stored as a JSON value under the Adapter object.
+  
+![image](https://user-images.githubusercontent.com/28166743/218329154-904c0a8e-1310-44ce-a699-f1b2446da436.png)
+  
 
 ## Changelog
 
-<!--
-    Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
--->
+### 0.0.1 (2023-02-12)
+* (schnup89) Initial Release
 
-### **WORK IN PROGRESS**
-
--   (Schnup89) initial release
+###
 
 ## License
 
