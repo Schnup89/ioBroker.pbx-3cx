@@ -59,6 +59,10 @@ Once connected, the enabled API-Endpoints are queried and the result is stored a
 ## Changelog
 
 ### 0.0.1 (2023-02-12)
+* (schnup89) Bugfix: Update PR Dependencies
+* (schnup89) Bugfix: Removed debug declaration with causes Test and Release to fail.
+
+### 0.0.1 (2023-02-12)
 * (schnup89) Initial Release
 
 ###
