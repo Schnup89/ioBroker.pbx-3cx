@@ -71,7 +71,7 @@
         ]
     },
     "native": {
-        "sUser": "root",
+        "sUser": "",
         "sRefresh": 30,
         "aAPIEndpoints": [
             {

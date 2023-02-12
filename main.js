@@ -8,7 +8,7 @@ const https = require('https');
 let sCookie = 'bad';
 let tmr_GetValues = null;
 let tmr_GetValues_Live = null;
-const nEndpointCount = 11;
+let bApiConnected = false;
 
 class Pbx3cx extends utils.Adapter {
     /**
@@ -43,7 +43,7 @@ class Pbx3cx extends utils.Adapter {
 
         // Create HTTP API Object
         this.ApiClient3CX = axios.create({
-            baseURL: 'https://' + this.config.sHost + ':5001/api',
+            baseURL: this.config.sHost,
             timeout: 1000,
             headers: { 'Content-Type': 'application/json' },
             responseEncoding: 'utf8',
@@ -66,7 +66,7 @@ class Pbx3cx extends utils.Adapter {
             sCookie = 'bad';
         });
         if (oRes != undefined) {
-            if (oRes.status != 200) {
+            if (oRes.status == 200) {
                 this.log.info(
                     'Verbindung zu 3CX ' +
                         JSON.parse(JSON.stringify(oRes.data.FQDN)) +
@@ -74,7 +74,9 @@ class Pbx3cx extends utils.Adapter {
                         JSON.parse(JSON.stringify(oRes.data.Version)) +
                         ') erfolgreich.',
                 );
-                this.setState('info.connection', true, true);
+                this.setApiConnection(true);
+            } else {
+                this.log.error('Error fetching PBX-Informations from API!');
             }
         } else {
             this.log.error('Error fetching PBX-Informations from API!');
@@ -106,8 +108,8 @@ class Pbx3cx extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            clearTimeout(tmr_GetValues);
-            clearTimeout(tmr_GetValues_Live);
+            this.clearTimeout(tmr_GetValues);
+            this.clearTimeout(tmr_GetValues_Live);
 
             callback();
         } catch (e) {
@@ -190,22 +192,32 @@ class Pbx3cx extends utils.Adapter {
         // Set Timer for next Refresh
         tmr_GetValues = setTimeout(() => this.startDataLoop(), this.config.sRefresh * 1000);
 
-        this.config.aAPIEndpoints.forEach((oEntry) => {
-            if (oEntry.bEnabled && !oEntry.bLive) {
-                this.getJsonData(oEntry.sEP);
-            }
-        });
+        if (bApiConnected) {
+            this.config.aAPIEndpoints.forEach((oEntry) => {
+                if (oEntry.bEnabled && !oEntry.bLive) {
+                    this.getJsonData(oEntry.sEP);
+                }
+            });
+        } else {
+            // Refresh if connection is lost
+            this.getJsonData('SystemStatus');
+        }
+        // Device Online-Check if SystemStatus is not choosen
+        if (this.config.aAPIEndpoints.findIndex((oEntry) => oEntry.sEP == 'SystemStatus') == -1)
+            this.getJsonData('SystemStatus');
     }
 
     async startLiveDataLoop() {
         // Set Timer for next Refresh
-        tmr_GetValues = setTimeout(() => this.startLiveDataLoop(), 1000);
+        tmr_GetValues_Live = setTimeout(() => this.startLiveDataLoop(), 1000);
 
-        this.config.aAPIEndpoints.forEach((oEntry) => {
-            if (oEntry.bEnabled && oEntry.bLive) {
-                this.getJsonData(oEntry.sEP);
-            }
-        });
+        if (bApiConnected) {
+            this.config.aAPIEndpoints.forEach((oEntry) => {
+                if (oEntry.bEnabled && oEntry.bLive) {
+                    this.getJsonData(oEntry.sEP);
+                }
+            });
+        }
     }
 
     async getJsonData(sEP) {
@@ -215,15 +227,32 @@ class Pbx3cx extends utils.Adapter {
             method: 'get',
             headers: { Cookie: sCookie },
         }).catch((sErr) => {
-            this.log.error('Error get PBX info: ' + sErr);
+            if (sErr.response) {
+                this.getNewCookie();
+                return;
+            } else {
+                this.log.error('Error get PBX info: ' + sErr);
+                // Device Online-Check
+                if (sEP == 'SystemStatus') this.setApiConnection(false);
+            }
         });
         if (oRes != undefined) {
-            if (oRes.status != 200) {
-                this.setStateChangedAsync(sEP, { val: oRes.data, ack: true });
+            if (oRes.status == 200) {
+                this.setStateChangedAsync(sEP, { val: JSON.stringify(oRes.data), ack: true });
+                // Device Online-Check
+                if (sEP == 'SystemStatus') this.setApiConnection(true);
             }
         } else {
-            this.log.error('Error getting Endpoint "' + sEP);
+            this.log.error('Error getting Endpoint: ' + sEP);
+            // Device Online-Check
+            if (sEP == 'SystemStatus') this.setApiConnection(false);
         }
+    }
+
+    async setApiConnection(bStatus) {
+        bApiConnected = bStatus;
+        await this.setStateChangedAsync('info.connection', { val: bStatus, ack: true });
+        this.log.debug('PBX-Connection Changed isConnected: ' + bStatus);
     }
 }
 

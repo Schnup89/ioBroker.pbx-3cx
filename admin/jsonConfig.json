@@ -9,7 +9,10 @@
         },
         "sHost": {
             "type": "text",
-            "label": "3CX IP/DNS",
+            "label": "3CX URL (https://192.168.178.10:5001/api)",
+            "sm": 5,
+            "md": 5,
+            "lg": 5,
             "newLine": true
         },
         "sUser": {
