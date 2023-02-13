@@ -14,50 +14,45 @@
 ## pbx-3cx adapter for ioBroker
 
 **[DE]**  
-Mit diesem Adapter kannst du Daten aus deiner 3CX-Telefonanlage zyklisch in ioBroker übertragen.  
-  
+Mit diesem Adapter kannst du Daten aus deiner 3CX-Telefonanlage zyklisch in ioBroker übertragen.
+
 **[EN ]**  
 This Adapter allows you to fetch Data from your 3CX-PBX to ioBroker.
-  
-  
-## Setup / Konfiguration  
+
+## Setup / Konfiguration
 
 **[DE]**  
 In der Adapter-Konfiguration unter Instanzen -> pbx-3CX -> Einstellungen müssen folgende Werte eingetragen werden:  
 URL-Format: https://deine_pbx_ip_oder_dns_name:5001/api  
 Username: admin, root oder nebenstelle, je nach Konfiguration  
-Passwort: geheim :)  
-  
+Passwort: geheim :)
+
 Jeder API-Endpunkt kann aktiviert und deaktiviert werden. Zusätzlich kann der Abfrageintervall für einzelne API-Endpunkte auf 1 Sekunde verkürzt werden (Livedata).  
-Der Standard-Aktualisierungsinterval kann in der Adapter-Config angegeben werden kann. 
+Der Standard-Aktualisierungsinterval kann in der Adapter-Config angegeben werden kann.
 Bitte aktiviert nur API-Endpunkte die Ihr wirklich benötigt (vor allem Livedata), jede Abfrage benötige entsprechende Performance auf beiden Seiten.
-  
-    
+
 **[EN]**  
 To connect to yopur 3CX-PBX you have to fill out the connection parameter in the adapter-configuration (Instances -> pbx-3CX -> Settings)  
-URL-Format: https://your_pbx_ip_or_dns_name:5001/api   
-Username: admin, root or extension, depending on the config   
-Password: your secret :)  
+URL-Format: https://your_pbx_ip_or_dns_name:5001/api  
+Username: admin, root or extension, depending on the config  
+Password: your secret :)
 
 Any API-Endpoint can be enabled or disabled. In addition, the polling interval for individual API-Endpoints can be shortened to 1 second (Livedata).  
 The default update interval can be specified in the adapter config.
 Please activate only API-Endpoints that you really need (especially live data), each query has performance impacts on both sides.
 
+## Usage / Benutzung
 
-
-## Usage / Benutzung 
-  
 **[DE]**  
 Ist die Verbindung hergestellt, werden die aktivierten API-Endpunkte abgefragt und das Ergebnis als JSON-Wert unter den Adapter-Objekt gespeichert.
-  
+
 **[EN]**  
 Once connected, the enabled API-Endpoints are queried and the result is stored as a JSON value under the Adapter object.
-  
+
 ![image](https://user-images.githubusercontent.com/28166743/218329154-904c0a8e-1310-44ce-a699-f1b2446da436.png)
-  
 
 ## Troubleshooting/Feature-Request / Problembehandlung/Änderungswünsche
-  
+
 **[DE]**  
 Bei Problemne mit dem Adapter bitte in der Instanzkonfiguration das "Debugging" des Adapters aktivieren und einen Issue eröffnen mit einer Beschreibung des Problem und den Logs.  
 Änderungswünsche (Neue API-Endpoints, etc.) gerne auch per Github Issue oder ioBroker Forum (Tag me: https://forum.iobroker.net/user/schnup89) melden.
@@ -66,15 +61,20 @@ Bei Problemne mit dem Adapter bitte in der Instanzkonfiguration das "Debugging" 
 If you have problems with the Adapter, please activate the "Debugging" Option in the adapter-instance configuration and open an issue with a description of the problem and the logs.
 Feel free to report Feature-Requests (new API endpoints, etc.) via Github issue or ioBroker Forum (Tag me: https://forum.iobroker.net/user/schnup89)
 
-
 ## Changelog
 
-### 0.0.1 (2023-02-12)
-* (schnup89) Bugfix: Update PR Dependencies
-* (schnup89) Bugfix: Removed debug declaration with causes Test and Release to fail.
+### 0.0.3 (2023-02-13)
+
+-   (schnup89) Bugfix: Suppress multiple Cookie Requests
+
+### 0.0.2 (2023-02-12)
+
+-   (schnup89) Bugfix: Update PR Dependencies
+-   (schnup89) Bugfix: Removed debug declaration with causes Test and Release to fail.
 
 ### 0.0.1 (2023-02-12)
-* (schnup89) Initial Release
+
+-   (schnup89) Initial Release
 
 ###
 

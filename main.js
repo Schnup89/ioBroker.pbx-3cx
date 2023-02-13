@@ -4,10 +4,12 @@ const utils = require('@iobroker/adapter-core');
 
 const axios = require('axios');
 const https = require('https');
+const { Script } = require('vm');
 let sCookie = 'bad';
 let tmr_GetValues = null;
 let tmr_GetValues_Live = null;
 let bApiConnected = false;
+let bCookieRunning = false;
 
 class Pbx3cx extends utils.Adapter {
     /**
@@ -119,25 +121,29 @@ class Pbx3cx extends utils.Adapter {
 
     // Get new Cookie from API
     async getNewCookie() {
-        await this.ApiClient3CX.request({
-            url: 'login',
-            method: 'post',
-            headers: { 'Content-Type': 'application/json' },
-            data: '{"Username":"' + this.config.sUser + '","Password":"' + this.config.sPass + '"}',
-        })
-            .then(function (res) {
-                // On successful request, remember Cookie
-                sCookie = res.headers['set-cookie'].toString().split(';')[0];
-                return;
+        if (!bCookieRunning) {
+            bCookieRunning = true;
+            await this.ApiClient3CX.request({
+                url: 'login',
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                data: '{"Username":"' + this.config.sUser + '","Password":"' + this.config.sPass + '"}',
             })
-            .catch((sErr) => {
-                // On error request, set bad Cookie, set Apiconnection and print error in IOBroker
-                this.log.warn('Error getting Cookie: ' + sErr);
-                sCookie = 'bad';
-                this.setApiConnection(false);
-                return;
-            });
-        this.log.debug('Got Cookie: ' + sCookie);
+                .then(function (res) {
+                    // On successful request, remember Cookie
+                    sCookie = res.headers['set-cookie'].toString().split(';')[0];
+                    return;
+                })
+                .catch((sErr) => {
+                    // On error request, set bad Cookie, set Apiconnection and print error in IOBroker
+                    this.log.warn('Error getting Cookie: ' + sErr);
+                    sCookie = 'bad';
+                    this.setApiConnection(false);
+                    return;
+                });
+            bCookieRunning = false;
+            this.log.debug('Got Cookie: ' + sCookie);
+        }
     }
 
     async startDataLoop() {

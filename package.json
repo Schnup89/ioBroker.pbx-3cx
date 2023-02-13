@@ -1,6 +1,6 @@
 {
   "name": "iobroker.pbx-3cx",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Anbindung von 3CX Telefonanlagen",
   "author": {
     "name": "Schnup89",

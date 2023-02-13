@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "pbx-3cx",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -28,6 +28,19 @@
                 "pl": "Zalecenie PR + Dependencyjności",
                 "uk": "Github PR + Залежності",
                 "zh-cn": "GthubPR+受扶养人"
+            },
+            "0.0.3": {
+                "en": "Bugfix: Suppress multiple Cookie Requests",
+                "de": "Bugfix: Mehrere Cookie-Anfragen unterdrücken",
+                "ru": "Bugfix: Suppress несколько запросов Cookie",
+                "pt": "Bugfix: Suprimir várias solicitações de cookies",
+                "nl": "Vertaling:",
+                "fr": "Bugfix: Suppress multiples demandes de cookies",
+                "it": "Bugfix: Suppress multiple Cookie Requests",
+                "es": "Bugfix: Suppress multiple Cookie Solicita",
+                "pl": "Bugfix: Suppress multiple Cookie Requests (ang.)",
+                "uk": "Виправлення помилок: Suppress багаторазові файли cookie",
+                "zh-cn": "Bugfix:禁止多重库克群岛请求"
             }
         },
         "titleLang": {
