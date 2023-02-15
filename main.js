@@ -4,7 +4,7 @@ const utils = require('@iobroker/adapter-core');
 
 const axios = require('axios');
 const https = require('https');
-const { Script } = require('vm');
+
 let sCookie = 'bad';
 let tmr_GetValues = null;
 let tmr_GetValues_Live = null;

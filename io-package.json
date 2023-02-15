@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "pbx-3cx",
-        "version": "0.0.3",
+        "version": "1.0.0",
         "news": {
             "0.0.1": {
                 "en": "initial release",
