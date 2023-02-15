@@ -63,6 +63,10 @@ Feel free to report Feature-Requests (new API endpoints, etc.) via Github issue 
 
 ## Changelog
 
+### 1.0.0 (2023-02-15)
+
+-   (schnup89) First Release, Removed Debug-Code
+
 ### 0.0.3 (2023-02-13)
 
 -   (schnup89) Bugfix: Suppress multiple Cookie Requests

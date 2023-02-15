@@ -41,7 +41,20 @@
                 "pl": "Bugfix: Suppress multiple Cookie Requests (ang.)",
                 "uk": "Виправлення помилок: Suppress багаторазові файли cookie",
                 "zh-cn": "Bugfix:禁止多重库克群岛请求"
-            }
+            },
+            {
+                "en": "Release 1.0.0, removed Debug-Code",
+                "de": "Release 1.0.0, entfernt Debug-Code",
+                "ru": "Релиз 1.0.0, удален Debug-Code",
+                "pt": "Lançamento 1.0.0, removido Debug-Code",
+                "nl": "Laat 1.0.0, verwijder Debug-Code",
+                "fr": "Relâche 1.0.0, supprimer Debug-Code",
+                "it": "Rilasciare 1.0.0, rimosso Debug-Code",
+                "es": "Lanzamiento 1.0.0, quitado Debug-Code",
+                "pl": "Wydanie 1.0.0 usunęło Debug-Code",
+                "uk": "Видалити Debug-Code",
+                "zh-cn": "附录1.0.0,删除Debug-Code"
+              }
         },
         "titleLang": {
             "en": "3CX-PBX",
