@@ -1,19 +1,9 @@
 ![Logo](../../admin/pbx-3cx.png)
 
-# ioBroker.pbx-3cx
-
-[![NPM version](https://img.shields.io/npm/v/iobroker.pbx-3cx.svg)](https://www.npmjs.com/package/iobroker.pbx-3cx)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.pbx-3cx.svg)](https://www.npmjs.com/package/iobroker.pbx-3cx)
-![Number of Installations](https://iobroker.live/badges/pbx-3cx-installed.svg)
-![Current version in stable repository](https://iobroker.live/badges/pbx-3cx-stable.svg)
-
-[![NPM](https://nodei.co/npm/iobroker.pbx-3cx.png?downloads=true)](https://nodei.co/npm/iobroker.pbx-3cx/)
-
-**Tests:** ![Test and Release](https://github.com/Schnup89/ioBroker.pbx-3cx/workflows/Test%20and%20Release/badge.svg)
 
 ## pbx-3cx adapter for ioBroker
 
-This Adapter allows you to fetch Data from your 3CX-PBX to ioBroker.
+This Adapter allows you to fetch data from your 3CX-PBX to ioBroker.
 
 ## Setup
 
