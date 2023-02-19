@@ -85,7 +85,9 @@ class Pbx3cx extends utils.Adapter {
         // Create IO-Objects
         this.config.aAPIEndpoints.forEach((oEntry) => {
             if (oEntry.bEnabled) {
-                this.setObjectNotExists(oEntry.sEP.split(/[^a-z/]/i)[0], {
+                // Split API Endpoint that Parameters are not written to Object ID
+                // And Check for forbidden charaters
+                this.setObjectNotExists(this.name2id(oEntry.sEP.split(/[^a-z/]/i)[0]), {
                     type: 'state',
                     common: {
                         type: 'json',
@@ -148,7 +150,7 @@ class Pbx3cx extends utils.Adapter {
 
     async startDataLoop() {
         // Set Timer for next Refresh
-        tmr_GetValues = setTimeout(() => this.startDataLoop(), this.config.sRefresh * 1000);
+        tmr_GetValues = this.setTimeout(() => this.startDataLoop(), this.config.sRefresh * 1000);
 
         // Loop through every APIEndpoint enabled in Adapter-Config (enabled, not live)
         if (bApiConnected) {
@@ -168,7 +170,7 @@ class Pbx3cx extends utils.Adapter {
 
     async startLiveDataLoop() {
         // Set Timer for next Refresh
-        tmr_GetValues_Live = setTimeout(() => this.startLiveDataLoop(), 1000);
+        tmr_GetValues_Live = this.setTimeout(() => this.startLiveDataLoop(), 1000);
 
         // Loop through every APIEndpoint enabled in Adapter-Config (enabled, and live)
         if (bApiConnected) {
@@ -227,6 +229,11 @@ class Pbx3cx extends utils.Adapter {
         // Print error if connection is lost
         if (!bStatus) this.log.error('PBX-Connection Changed isConnected: ' + bStatus);
         else this.log.warn('PBX-Connection Changed isConnected: ' + bStatus);
+    }
+
+    // Return only ioBroker valid Characters for Object ID
+    name2id(pName) {
+        return (pName || '').replace(this.FORBIDDEN_CHARS, '_');
     }
 }
 

@@ -79,17 +79,60 @@
         },
         "_header-endpoints": {
             "type": "header",
-            "text": "API Endpoints",
+            "text": {
+                "en": "API Endpoints",
+                "de": "API Endpunkte",
+                "ru": "API Endpoints",
+                "pt": "API Pontos finais",
+                "nl": "API Endpoints",
+                "fr": "API Endpoints",
+                "it": "API Endpoints",
+                "es": "API Endpoints",
+                "pl": "API Endpoints",
+                "uk": "API кінцеві точки",
+                "zh-cn": "API Endpoint"
+            },
             "size": 2
         },
         "aAPIEndpoints": {
             "type": "table",
             "noDelete": true,
             "items": [
-                { "type": "text", "width": "100%", "title": "Endpoint", "attr": "sEP", "filter": false, "sort": false },
+                {
+                    "type": "text",
+                    "width": "100%",
+                    "title": {
+                        "en": "Endpoints",
+                        "de": "Endpunkte",
+                        "ru": "Конечные точки",
+                        "pt": "Pontos de vista",
+                        "nl": "Endpoints",
+                        "fr": "Endpoints",
+                        "it": "Punti finali",
+                        "es": "Puntos finales",
+                        "pl": "Endpoint",
+                        "uk": "Напрямки",
+                        "zh-cn": "结 论"
+                    },
+                    "attr": "sEP",
+                    "filter": false,
+                    "sort": false
+                },
                 {
                     "type": "checkbox",
-                    "title": "Enable",
+                    "title": {
+                        "en": "Enable",
+                        "de": "Aktiv",
+                        "ru": "Включить",
+                        "pt": "Habilitar",
+                        "nl": "In staat",
+                        "fr": "Active",
+                        "it": "Abilitare",
+                        "es": "Habilitación",
+                        "pl": "Pełny",
+                        "uk": "Увімкнути",
+                        "zh-cn": "附录"
+                    },
                     "attr": "bEnabled",
                     "width": 200,
                     "filter": false,
@@ -97,7 +140,19 @@
                 },
                 {
                     "type": "checkbox",
-                    "title": "Livedata",
+                    "title": {
+                        "en": "Livedata",
+                        "de": "Livedaten",
+                        "ru": "Живые данные",
+                        "pt": "Dados ao vivo",
+                        "nl": "Livedata",
+                        "fr": "Livedata",
+                        "it": "Livedata",
+                        "es": "Livedata",
+                        "pl": "Livedata",
+                        "uk": "Головна",
+                        "zh-cn": "数据"
+                    },
                     "width": 200,
                     "attr": "bLive",
                     "filter": false,

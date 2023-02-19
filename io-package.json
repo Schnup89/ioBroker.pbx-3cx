@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "pbx-3cx",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -54,6 +54,19 @@
                 "pl": "Wydanie 1.0.0 usunęło Debug-Code",
                 "uk": "Видалити Debug-Code",
                 "zh-cn": "附录1.0.0,删除Debug-Code"
+            },
+            "1.0.1": {
+                "en": "Readme-fixes, setTimeout fixed, translations added, password encryption activated, iobroker id check implemented",
+                "de": "Readme-fixes, setTimeout fix, Übersetzungen hinzugefügt, passwortverschlüsselung aktiviert, iobroker id check implementiert",
+                "ru": "Readme-фиксы, setTimeout фиксированный, добавлены переводы, кодирование пароля активирован, iobroker id check реализован",
+                "pt": "Readme-fixes, setTimeout fixo, traduções adicionadas, criptografia de senha ativado, iobroker id check implementado",
+                "nl": "Vertaling:",
+                "fr": "Readme-fixes, setTimeout corrigé, traductions ajoutées, cryptage de mot de passe activé, iobroker id check implemented",
+                "it": "Readme-fixes, setTimeout fisso, traduzioni aggiunte, password crittografia attivata, iobroker id check implementato",
+                "es": "Gráficos de lectura, setTimeout fijo, traducciones agregadas, cifrado de contraseña activado, cheque de id de iobroker implementado",
+                "pl": "Readme-fixes, setTimeout stał, tłumaczenia dodane, szyfrowanie haseł aktywowane, iobroker id check implementował",
+                "uk": "Readme-fixes, setTimeout фіксований, додано переклади, активоване шифрування пароля, іоброкер id check Реалізований",
+                "zh-cn": "阅读系统固定、翻译、加写、加字母加密引言、奥罗布克的检查执行"
             }
         },
         "titleLang": {
@@ -111,8 +124,11 @@
             }
         ]
     },
+    "encryptedNative": ["sPass"],
+    "protectedNative": ["sPass"],
     "native": {
         "sUser": "",
+        "sPass": "",
         "sRefresh": 15,
         "aAPIEndpoints": [
             {
