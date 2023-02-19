@@ -23,7 +23,6 @@ Ist die Verbindung hergestellt, werden die aktivierten API-Endpunkte abgefragt u
 
 ## Problembehandlung/Änderungswünsche
 
-**[DE]**  
 Bei Problemne mit dem Adapter bitte in der Instanzkonfiguration das "Debugging" des Adapters aktivieren und einen Issue eröffnen mit einer Beschreibung des Problem und den Logs.  
 Änderungswünsche (Neue API-Endpoints, etc.) gerne auch per Github Issue oder ioBroker Forum (Tag me: https://forum.iobroker.net/user/schnup89) melden.
 
