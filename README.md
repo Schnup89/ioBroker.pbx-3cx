@@ -21,6 +21,13 @@ This Adapter allows you to fetch data from your 3CX-PBX to ioBroker.
 
 ## Changelog
 
+### 1.0.1 (2023-02-19)
+
+-   (schnup89) !!! Password-Encryption activated, please re-enter your password !!!
+-   (schnup89) Readme changed
+-   (schnup89) Bugfix: setTimeout changed, ioBroker Object-ID check implemented
+-   (schnup89) Added more Translations
+
 ### 1.0.0 (2023-02-15)
 
 -   (schnup89) First Release, Removed Debug-Code
