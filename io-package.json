@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "pbx-3cx",
-        "version": "1.0.1",
+        "version": "1.0.2",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -67,7 +67,21 @@
                 "pl": "Readme-fixes, setTimeout stał, tłumaczenia dodane, szyfrowanie haseł aktywowane, iobroker id check implementował",
                 "uk": "Readme-fixes, setTimeout фіксований, додано переклади, активоване шифрування пароля, іоброкер id check Реалізований",
                 "zh-cn": "阅读系统固定、翻译、加写、加字母加密引言、奥罗布克的检查执行"
+            },
+            "1.0.2": {
+                "en": "Automatic Cookie refresh implemented",
+                "de": "Automatische Cookie-Erneuerung implementiert",
+                "ru": "Автоматическое обновление файлов cookie реализовано",
+                "pt": "Atualização automática de cookies implementada",
+                "nl": "Automatische Cookie verfrissing ingevoerd",
+                "fr": "Mise à niveau automatique des cookies",
+                "it": "Rinfresco automatico Cookie implementato",
+                "es": "Actualización automática de cookies implementada",
+                "pl": "Automatic Cooke z refreshment",
+                "uk": "Автоматичне оновлення файлів cookie",
+                "zh-cn": "自动反应台"
             }
+        },
         },
         "titleLang": {
             "en": "3CX-PBX",

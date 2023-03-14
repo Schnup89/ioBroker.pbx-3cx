@@ -8,6 +8,7 @@ const https = require('https');
 let sCookie = 'bad';
 let tmr_GetValues = null;
 let tmr_GetValues_Live = null;
+let tmr_RefreshCookie = null;
 let bApiConnected = false;
 let bCookieRunning = false;
 
@@ -38,6 +39,9 @@ class Pbx3cx extends utils.Adapter {
             this.log.error('Refresh interval should be between 5 and 10000 - please check instance configuration!');
             return;
         }
+
+        // Start Cookie-Refresh Loop before initializing, to skip first loop
+        this.startRefreshCookieLoop();
 
         // Create HTTP API Object
         this.ApiClient3CX = axios.create({
@@ -112,6 +116,7 @@ class Pbx3cx extends utils.Adapter {
             // Stop DataLoop's on exit
             this.clearTimeout(tmr_GetValues);
             this.clearTimeout(tmr_GetValues_Live);
+            this.clearTimeout(tmr_RefreshCookie);
 
             callback();
         } catch (e) {
@@ -179,6 +184,16 @@ class Pbx3cx extends utils.Adapter {
                     this.getJsonData(oEntry.sEP);
                 }
             });
+        }
+    }
+
+    async startRefreshCookieLoop() {
+        // Set Timer for next Refresh in 15 Minutes
+        tmr_RefreshCookie = this.setTimeout(() => this.startRefreshCookieLoop(), 1000 * 60 * 15);
+        // Dont refresh Cookie on first loop
+        if (this.ApiClient3CX != null) {
+            this.log.debug('Refresh Cookie!');
+            this.getNewCookie();
         }
     }
 

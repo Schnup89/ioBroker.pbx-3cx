@@ -21,6 +21,10 @@ This Adapter allows you to fetch data from your 3CX-PBX to ioBroker.
 
 ## Changelog
 
+### 1.0.2 (2023-03-14)
+
+-   (schnup89) Automatic Cookie refresh every 15 minutes implemented - See Issue #6
+
 ### 1.0.1 (2023-02-19)
 
 -   (schnup89) !!! Password-Encryption activated, please re-enter your password !!!
