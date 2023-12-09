@@ -2,6 +2,13 @@
 
 # ioBroker.pbx-3cx
 
+🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴   
+
+THIS ADAPTER IS NOT MAINTAINED ANYMORE see https://github.com/ioBroker/ioBroker.repositories/pull/2142#issuecomment-1848675582   :skull_and_crossbones: RIP 3CX FREE
+ 
+🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 
+ 
+  
 [![NPM version](https://img.shields.io/npm/v/iobroker.pbx-3cx.svg)](https://www.npmjs.com/package/iobroker.pbx-3cx)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.pbx-3cx.svg)](https://www.npmjs.com/package/iobroker.pbx-3cx)
 ![Number of Installations](https://iobroker.live/badges/pbx-3cx-installed.svg)
